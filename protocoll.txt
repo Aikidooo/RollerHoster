@@ -27,13 +27,18 @@ Table of contents:
 
         111000 + 1000101 + 0000000000000000 + 1010010001010101
 
-        Packetlength (111000) + State (1000101 in this case) + Cookie (0000000000000000 in this case) + Data (1010010001010101 in this case)
+        Packetlength (111000) + State (1000101) + Cookie (0000000000000000) + Data (1010010001010101)
 
 
 
 
 1.2 Packet states
-    Packets send between server and client can have different states depending on there
+    Packets send between server and client can have different states depending on there usage:
+
+    states:
+
+        Authentication: 0
+        
 
 
 
