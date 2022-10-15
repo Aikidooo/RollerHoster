@@ -1,4 +1,7 @@
+Protocoll documentation of the RollerHoster Nas protocoll
 
+
+version 0.1.0
 protocoll: TCP
 server_port: 6969
 client_port: *
@@ -6,11 +9,21 @@ client_port: *
 
 
 Table of contents:
-1. Packets
-    1.1 Packet layout
-    1.2 Packet states
+    1. Packets
+        1.1 Packet layout
+        1.2 Packet states
 
-2.1 Authentication
+    2. Security
+        2.1 Authentication
+
+    3. Sync checking
+
+
+    4. File transfer
+        4.1
+
+    5. disconnect
+
 
 
 1.1 Packet Layout
@@ -25,10 +38,10 @@ Table of contents:
 
     Example:
 
-        packet = 0000000000000111 01000101 0000000000000000 1010010001010101
-        or 0000000000000111100010100000000000000001010010001010101
+        packet = 0000000000000111 00000001 0000000000000000 1010010001010101
+        or 0000000000000111000000100000000000000001010010001010101
 
-        Packetlength (0000000000000111) + State (01000101) + Cookie (0000000000000000) + Data (1010010001010101)
+        Packetlength (0000000000000111) + State (00000001) + Cookie (0000000000000000) + Data (1010010001010101)
 
 
 
@@ -40,10 +53,12 @@ Table of contents:
 
         Authentication: 0
         sync checking: 1
-        file transfer: 2
-        disconnect: 3
+        file download: 2
+        file upload: 3
+        disconnect: 4
 
     States a represented in one Byte.
+
 
 
 
@@ -55,21 +70,49 @@ Table of contents:
     The client begins Communication and sends an authentication request:
 
         C -> S
-
         packetlength: *
         State: 00000000
         Cookie: 00000000
         Data: Token(utf-8 to binary)
 
-    The server answers with a "set-cookie" request if the token was valid (cookie is stored in the cookie field). 
+    The server answers with a "set-cookie" request if the token was valid (cookie is stored in the cookie field).
     If the token send by the client isn't valid the server closes the connection.
 
         C <- S
-
         packetlength: *
         State: 0
-        Cookie: Cookie (2 Bytes)
-        Data: 00000000
+        Cookie: 2 zero bytes
+        Data: Cookie (2 bytes)
 
     The Client is now Authenticated and the conecction is ready to use.
     IMPORTANT: The cookie expires after the connection closes.
+
+
+
+
+4.1 File download
+    After the client got the directory tree from the server, he sends a request for every file the client wants to download.
+
+    We first set the packet state to the file download state.
+    The client then requests the file chunk per chunk.
+    The client decides by himself how many chunks he wants the file to be splittet into.
+    
+
+    C -> S
+    packetlength: *
+    State: 2
+    Cookie: Cookie
+    Data: chunk number(1 byte) + number of chunks(1 byte) + filename
+
+
+    After that the server sends the chunks in seperate packets.
+    All chunks are stored in the Data field.
+
+    C <- S
+    packetlength: *
+    State: 2
+    Cookie: 2 zero bytes
+    Data: chunk
+
+    If the client is missing a chunk, he requests the chunk again.
+
