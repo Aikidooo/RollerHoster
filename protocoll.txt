@@ -38,7 +38,11 @@ Table of contents:
     states:
 
         Authentication: 0
-        
+        sync checking: 1
+        file transfer: 2
+
+    States a represented in one Byte.
+
 
 
 
