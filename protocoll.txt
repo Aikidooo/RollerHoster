@@ -25,9 +25,10 @@ Table of contents:
 
     Example:
 
-        111000 + 1000101 + 0000000000000000 + 1010010001010101
+        packet = 0000000000000111 1000101 0000000000000000 1010010001010101
+        or 0000000000000111100010100000000000000001010010001010101
 
-        Packetlength (111000) + State (1000101) + Cookie (0000000000000000) + Data (1010010001010101)
+        Packetlength (0000000000000111) + State (1000101) + Cookie (0000000000000000) + Data (1010010001010101)
 
 
 
@@ -40,6 +41,7 @@ Table of contents:
         Authentication: 0
         sync checking: 1
         file transfer: 2
+        disconnect: 3
 
     States a represented in one Byte.
 
