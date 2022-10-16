@@ -1,11 +1,11 @@
 Protocoll documentation of the RollerHoster file sharing protocoll
 
 
-version: 0.1.2
+version: 0.1.3
 protocoll: TCP
 server_port: 6969
 
-
+Interaction identification: *(x:x)*
 
 Table of contents:
     1. Packets
@@ -69,8 +69,9 @@ Table of contents:
     The authentication of the client happens on Connection Start.
 
     The client begins Communication and sends an authentication request:
-
-        C -> S
+        
+        *(0:1)*
+        C -> S 
         packetlength: *
         State: 0
         Cookie: 2 zero bytes
@@ -78,8 +79,9 @@ Table of contents:
 
     The server answers with a "set-cookie" request if the token was valid (cookie is stored in the data field).
     If the token send by the client isn't valid the server closes the connection.
-
-        C <- S
+        
+        *(0:2)*
+        C <- S 
         packetlength: *
         State: 0
         Cookie: 2 zero bytes
@@ -95,7 +97,8 @@ Table of contents:
 3.1 Exchange Filetree
     After the client received the cookie, it requests the filetree of the servers target directory.
     The state is now Sync checking, the cookie has to be included from this state on. The data is set to one zero byte, since it isn't needed for this step.
-    
+        
+        *(1:1)*
         C -> S
         packetlength : 6 bytes
         State: 1
@@ -103,7 +106,8 @@ Table of contents:
         Data: 1 zero byte
 
     After that the server responds with it's filetree, which consists of a single text-file
-    
+        
+        *(1:2)*
         C <- S
         packetlength: *
         State: 1
@@ -120,7 +124,7 @@ Table of contents:
     The client then requests the file chunk per chunk.
     The client decides by himself how many chunks he wants the file to be splittet into.
     
-
+    *(2:1)*
     C -> S
     packetlength: *
     State: 2
@@ -130,7 +134,8 @@ Table of contents:
 
     After that the server sends the chunks in seperate packets.
     All chunks are stored in the Data field.
-
+    
+    *(2:2)*
     C <- S
     packetlength: *
     State: 2
@@ -146,6 +151,7 @@ Table of contents:
     To upload a file, the client first sends a header packet conataining the files name and the number of chunks the file is split into in the Data field.
     The filename is encoded using utf-8
 
+    *(3:1)*
     C -> S
     packetlength: *
     State: 3
@@ -153,7 +159,8 @@ Table of contents:
     Data: number of chunks (1 byte) + filename
 
     After that the client proceeds to send the chunks in individuell packet ot the server.
-
+    
+    *(3:2)*
     C -> S
     packetlength: *
     State: 3
@@ -161,7 +168,8 @@ Table of contents:
     Data: number of chunk(1 byte) + chunk
 
     If the server is missing some chunks he sends a packet containing the chunk number and filename of the chunk he is missing in the Data field.
-
+    
+    *(3:3)*
     C <- S
     packetlength: *
     State: 3
