@@ -16,7 +16,7 @@ Table of contents:
         2.1 Authentication
 
     3. Sync checking
-
+        3.1 Exchange Filetree
 
     4. File transfer
         4.1 File download
@@ -76,7 +76,7 @@ Table of contents:
         Cookie: 2 zero bytes
         Data: Token(utf-8 to binary)
 
-    The server answers with a "set-cookie" request if the token was valid (cookie is stored in the cookie field).
+    The server answers with a "set-cookie" request if the token was valid (cookie is stored in the data field).
     If the token send by the client isn't valid the server closes the connection.
 
         C <- S
@@ -89,6 +89,28 @@ Table of contents:
     IMPORTANT: The cookie expires after the connection closes.
 
 
+
+
+
+3.1 Exchange Filetree
+    After the client received the cookie, it requests the filetree of the servers target directory.
+    The state is now Sync checking, the cookie has to be included from this state on. The data is set to one zero byte, since it isn't needed for this step.
+    
+        C -> S
+        packetlength : 6 bytes
+        State: 1
+        Cookie: Cookie
+        Data: 1 zero byte
+
+    After that the server responds with it's filetree, which consists of a single text-file
+    
+        C <- S
+        packetlength: *
+        State: 1
+        Cookie: Cookie
+        Data: Filetree
+    
+    The client can now compare the servers filetree with his local files.
 
 
 4.1 File download
