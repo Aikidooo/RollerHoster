@@ -1,7 +1,7 @@
 Protocoll documentation of the RollerHoster file sharing protocoll
 
 
-version: 0.1.3
+version: 0.1.4
 protocoll: TCP
 server_port: 6969
 
