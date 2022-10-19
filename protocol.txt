@@ -218,7 +218,7 @@ Table of contents:
 
     If the server is missing some chunks he sends a packet containing the chunk number and filename of the chunk he is missing in the Data field.
     
-    (3:3)
+    (3:5)
     C <- S
     packetlength: *
     State: 3
@@ -229,7 +229,7 @@ Table of contents:
     
     When the client is finished with this phase, he sends a debug packet code (2).
     
-    (2:5)
+    (3:4)
     C -> S
     packetlength: 6 bytes
     State: 4
