@@ -112,7 +112,8 @@ Table of contents:
         Data: 1 zero byte
 
     After that the server responds with it's filetree, which consists of a single text-file
-    The data send from the server containes a list of the files and directorys the server contains, every filename includes a MD5 hash of the file, seperated from the filename using a colon(":").
+    The data send from the server containes a list of the files and directorys the server contains, every filename includes a MD5 hash of the file, 
+    seperated from the filename using a colon(":").
     The filedata packages a seperated using the hash("#") sign.
     If the shared folder contains file within other folders the server sends th path to the file as a filename (folder/filename:md5-hash)
     The filetree ends with a hash sign.
