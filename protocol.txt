@@ -175,6 +175,15 @@ Table of contents:
     Data: Debug code 1 (1 byte)
 
     If the client is missing a chunk, he requests the chunk again.
+    
+    When the client is finished with this phase, he sends a debug packet code (2).
+    
+    (2:5)
+    C -> S
+    packetlength: 6 bytes
+    State: 4
+    Cookie: Cookie
+    Data: Debug code 2 (1 byte)
 
 
 4.2 File upload
